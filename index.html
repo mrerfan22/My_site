@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ERFAN // WEB3 & FX</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Space Grotesk', sans-serif;
+            background-color: #030509;
+            background-image: 
+                linear-gradient(to right, rgba(30, 41, 59, 0.22) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(30, 41, 59, 0.22) 1px, transparent 1px),
+                radial-gradient(circle at 50% 20%, rgba(56, 189, 248, 0.12), transparent 60%);
+            background-size: 38px 38px, 38px 38px, 100% 100%;
+            min-height: 100vh;
+            overflow-x: hidden;
+            perspective: 1200px;
+        }
+        .mono { font-family: 'JetBrains Mono', monospace; }
+
+        /* 1. PURE ETHEREUM PORTAL (NO TEXT, MULTI-LAYER ORBITAL ANIMATIONS) */
+        #portal-overlay {
+            position: fixed;
+            inset: 0;
+            background-color: #030509;
+            background-image: radial-gradient(circle at 50% 50%, rgba(56, 189, 248, 0.14), transparent 45%);
+            z-index: 50;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            user-select: none;
+            transition: opacity 0.9s cubic-bezier(0.22, 1, 0.36, 1),
+                        transform 1.15s cubic-bezier(0.7, 0, 0.2, 1),
+                        filter 0.9s ease;
+        }
+        #portal-overlay.warp-out {
+            opacity: 0;
+            transform: scale(3.5) translateZ(450px);
+            filter: blur(20px) brightness(2.4);
+            pointer-events: none;
+        }
+
+        .portal-wrapper {
+            position: relative;
+            width: 240px;
+            height: 240px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Ambient Breathing Pulse Ring */
+        .pulse-halo {
+            position: absolute;
+            width: 220px;
+            height: 220px;
+            border-radius: 50%;
+            border: 1px solid rgba(56, 189, 248, 0.25);
+            animation: haloPulse 3.2s ease-in-out infinite;
+        }
+        @keyframes haloPulse {
+            0%, 100% { transform: scale(0.92); opacity: 0.2; box-shadow: 0 0 20px rgba(56, 189, 248, 0.1); }
+            50% { transform: scale(1.12); opacity: 0.65; box-shadow: 0 0 50px rgba(56, 189, 248, 0.35); }
+        }
+
+        /* Outer Energy Orbit with Glowing Nodes */
+        .energy-orbit-outer {
+            position: absolute;
+            width: 196px;
+            height: 196px;
+            border-radius: 50%;
+            border: 1.5px solid transparent;
+            border-top-color: rgba(56, 189, 248, 0.85);
+            border-right-color: rgba(99, 102, 241, 0.4);
+            animation: orbitCW 7s linear infinite;
+            filter: drop-shadow(0 0 10px rgba(56, 189, 248, 0.5));
+        }
+        .energy-orbit-outer::before {
+            content: '';
+            position: absolute;
+            top: 14px;
+            right: 22px;
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: #38bdf8;
+            box-shadow: 0 0 14px #38bdf8, 0 0 24px #38bdf8;
+        }
+        @keyframes orbitCW {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        /* Middle Counter-Rotating Dashed Cyber Ring */
+        .energy-orbit-mid {
+            position: absolute;
+            width: 162px;
+            height: 162px;
+            border-radius: 50%;
+            border: 1.5px dashed rgba(16, 185, 129, 0.45);
+            animation: orbitCCW 11s linear infinite;
+        }
+        .energy-orbit-mid::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 50%;
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: #10b981;
+            box-shadow: 0 0 12px #10b981;
+        }
+        @keyframes orbitCCW {
+            from { transform: rotate(360deg); }
+            to { transform: rotate(0deg); }
+        }
+
+        /* Inner Core Sphere + Floating Ethereum Logo */
+        .portal-core {
+            position: relative;
+            width: 122px;
+            height: 122px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(30, 41, 59, 0.75) 0%, rgba(7, 10, 19, 0.96) 100%);
+            border: 1px solid rgba(56, 189, 248, 0.35);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 0 45px rgba(56, 189, 248, 0.2), inset 0 0 25px rgba(56, 189, 248, 0.12);
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .eth-logo-anim {
+            animation: levitateEth 2.8s ease-in-out infinite;
+        }
+        @keyframes levitateEth {
+            0%, 100% { transform: translateY(0px) scale(1); filter: drop-shadow(0 0 10px rgba(255,255,255,0.25)); }
+            50% { transform: translateY(-7px) scale(1.06); filter: drop-shadow(0 0 22px rgba(56,189,248,0.75)); }
+        }
+        .portal-wrapper:hover .portal-core {
+            border-color: #38bdf8;
+            box-shadow: 0 0 70px rgba(56, 189, 248, 0.45), inset 0 0 35px rgba(56, 189, 248, 0.25);
+            transform: scale(1.08);
+        }
+
+        /* Click Shockwave Blast */
+        .shockwave {
+            position: absolute;
+            width: 122px;
+            height: 122px;
+            border-radius: 50%;
+            border: 2px solid #38bdf8;
+            opacity: 0;
+            pointer-events: none;
+        }
+        .shockwave.trigger-wave {
+            animation: waveBlast 0.85s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+        @keyframes waveBlast {
+            0% { transform: scale(1); opacity: 0.95; border-width: 4px; }
+            100% { transform: scale(13); opacity: 0; border-width: 1px; }
+        }
+
+        /* 2. SPACIOUS MAIN INTERFACE & STAGGERED 3D ENTRANCE */
+        #realm-main {
+            opacity: 0;
+            transform: scale(0.84) translateY(45px) rotateX(10deg);
+            filter: blur(12px);
+            pointer-events: none;
+            transition: opacity 1s cubic-bezier(0.16, 1, 0.3, 1) 0.25s,
+                        transform 1.1s cubic-bezier(0.16, 1, 0.3, 1) 0.25s,
+                        filter 0.9s ease 0.25s;
+        }
+        #realm-main.enter-active {
+            opacity: 1;
+            transform: scale(1) translateY(0) rotateX(0deg);
+            filter: blur(0px);
+            pointer-events: auto;
+        }
+
+        .stagger-item {
+            opacity: 0;
+            transform: translateY(24px);
+            transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .enter-active .stagger-1 { opacity: 1; transform: translateY(0); transition-delay: 0.45s; }
+        .enter-active .stagger-2 { opacity: 1; transform: translateY(0); transition-delay: 0.60s; }
+        .enter-active .stagger-3 { opacity: 1; transform: translateY(0); transition-delay: 0.75s; }
+
+        .dashboard-card {
+            background: rgba(8, 12, 22, 0.88);
+            backdrop-filter: blur(28px);
+            border: 1px solid rgba(56, 189, 248, 0.25);
+            box-shadow: 0 35px 80px rgba(0, 0, 0, 0.92), 0 0 50px rgba(56, 189, 248, 0.06);
+        }
+        .avatar-glow {
+            padding: 3px;
+            background: linear-gradient(135deg, #38bdf8, #6366f1, #ec4899);
+            box-shadow: 0 0 30px rgba(56, 189, 248, 0.32);
+        }
+        .bento-bio {
+            background: linear-gradient(135deg, rgba(15, 23, 42, 0.8), rgba(9, 13, 24, 0.92));
+            border: 1px solid rgba(255, 255, 255, 0.09);
+            border-left: 4px solid #38bdf8;
+        }
+        .social-box {
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.09);
+            transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .social-box-x:hover {
+            border-color: rgba(56, 189, 248, 0.65);
+            background: rgba(15, 23, 42, 0.92);
+            box-shadow: 0 12px 35px rgba(56, 189, 248, 0.18);
+            transform: translateY(-4px);
+        }
+        .social-box-tg:hover {
+            border-color: rgba(16, 185, 129, 0.65);
+            background: rgba(15, 23, 42, 0.92);
+            box-shadow: 0 12px 35px rgba(16, 185, 129, 0.18);
+            transform: translateY(-4px);
+        }
+    </style>
+</head>
+<body class="text-slate-100 flex items-center justify-center p-6 sm:p-10">
+
+    <!-- 1. PURE ETHEREUM PORTAL (NO TEXT, ANIMATED ORBITAL RINGS) -->
+    <div id="portal-overlay" onclick="enterRealm()">
+        <div class="portal-wrapper">
+            <div id="wave" class="shockwave"></div>
+            <div class="pulse-halo"></div>
+            <div class="energy-orbit-outer"></div>
+            <div class="energy-orbit-mid"></div>
+            <div class="portal-core">
+                <svg viewBox="0 0 256 417" class="w-11 h-18 eth-logo-anim">
+                    <polygon fill="#94a3b8" points="127.9611 0 125.1661 9.5 125.1661 285.168 127.9611 287.958 255.9231 212.32"/>
+                    <polygon fill="#f8fafc" points="127.962 0 0 212.32 127.962 287.959 127.962 154.158"/>
+                    <polygon fill="#64748b" points="127.9611 312.1866 126.3861 314.1066 126.3861 412.3056 127.9611 416.9066 255.9991 236.5866"/>
+                    <polygon fill="#e2e8f0" points="127.962 416.9052 127.962 312.1852 0 236.5852"/>
+                    <polygon fill="#475569" points="127.9611 287.9577 255.9211 212.3207 127.9611 154.1587"/>
+                    <polygon fill="#cbd5e1" points="0.0009 212.3208 127.9609 287.9578 127.9609 154.1588"/>
+                </svg>
+            </div>
+        </div>
+    </div>
+
+    <!-- 2. SPACIOUS WIDE MAIN INTERFACE -->
+    <main id="realm-main" class="dashboard-card max-w-3xl w-full rounded-[34px] p-8 sm:p-14 relative">
+        
+        <!-- Top Spacious Header with Custom Penguin Avatar -->
+        <div class="stagger-item stagger-1 flex flex-col sm:flex-row sm:items-center justify-between gap-6 pb-8 mb-10 border-b border-slate-800/80">
+            <div class="flex items-center gap-6">
+                <div class="avatar-glow w-20 h-20 sm:w-24 sm:h-24 rounded-3xl flex-shrink-0">
+                    <img src="data:image/webp;base64,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" alt="ERFAN BASE, ETH" class="w-full h-full rounded-[21px] object-cover">
+                </div>
+                <div>
+                    <h1 class="mono text-3xl sm:text-4xl font-extrabold tracking-[0.22em] text-white">ERFAN</h1>
+                    <p class="mono text-xs tracking-[0.25em] text-cyan-400 font-semibold mt-2">BASE, ETH • WEB3 • FOREX</p>
+                </div>
+            </div>
+
+            <div class="inline-flex items-center gap-2.5 self-start sm:self-auto bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-[11px] mono tracking-[0.2em] px-4 py-2 rounded-full">
+                <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+                <span>REALM ACTIVE</span>
+            </div>
+        </div>
+
+        <!-- Trendy Bio Box with ICT Trader -->
+        <div class="stagger-item stagger-2 bento-bio rounded-3xl p-7 sm:p-9 mb-10">
+            <div class="mono text-[10px] tracking-[0.3em] text-slate-500 mb-4">// IDENTITY & FOCUS</div>
+            <p class="mono text-base sm:text-xl leading-loose font-bold text-slate-100 tracking-wide">
+                <span class="text-emerald-400">Forex</span> & <span class="text-cyan-400">ICT</span> Trader 
+                <span class="text-slate-600 mx-2">/</span> 
+                <span class="text-indigo-400">NFT</span> Activist 
+                <span class="text-slate-600 mx-2">/</span> 
+                <span class="text-cyan-400">Web3</span> Researcher
+            </p>
+        </div>
+
+        <!-- Spacious 2-Column Handle Cards -->
+        <div class="stagger-item stagger-3 grid grid-cols-1 sm:grid-cols-2 gap-6">
+            <a href="https://x.com/erfan_base_eth" target="_blank" 
+               class="social-box social-box-x rounded-3xl p-7 flex flex-col justify-between group">
+                <div class="flex items-center justify-between mb-6">
+                    <div class="w-12 h-12 rounded-2xl bg-slate-950 border border-slate-800 flex items-center justify-center group-hover:border-cyan-400/50 transition">
+                        <i class="fa-brands fa-x-twitter text-xl text-white group-hover:text-cyan-400 transition"></i>
+                    </div>
+                    <i class="fa-solid fa-arrow-up-right-from-square text-sm text-slate-500 group-hover:text-cyan-400 transition"></i>
+                </div>
+                <div>
+                    <div class="mono text-[10px] tracking-[0.25em] text-slate-500 mb-1.5">X (TWITTER)</div>
+                    <div class="mono text-lg sm:text-xl font-bold tracking-wider text-white group-hover:text-cyan-300 transition">
+                        @erfan_base_eth
+                    </div>
+                </div>
+            </a>
+
+            <a href="https://t.me/mrerf" target="_blank" 
+               class="social-box social-box-tg rounded-3xl p-7 flex flex-col justify-between group">
+                <div class="flex items-center justify-between mb-6">
+                    <div class="w-12 h-12 rounded-2xl bg-slate-950 border border-slate-800 flex items-center justify-center group-hover:border-emerald-400/50 transition">
+                        <i class="fa-brands fa-telegram text-xl text-sky-400 group-hover:text-emerald-400 transition"></i>
+                    </div>
+                    <i class="fa-solid fa-arrow-up-right-from-square text-sm text-slate-500 group-hover:text-emerald-400 transition"></i>
+                </div>
+                <div>
+                    <div class="mono text-[10px] tracking-[0.25em] text-slate-500 mb-1.5">TELEGRAM</div>
+                    <div class="mono text-lg sm:text-xl font-bold tracking-wider text-white group-hover:text-emerald-300 transition">
+                        @mrerf
+                    </div>
+                </div>
+            </a>
+        </div>
+
+    </main>
+
+    <script>
+        function enterRealm() {
+            const wave = document.getElementById('wave');
+            const portal = document.getElementById('portal-overlay');
+            const main = document.getElementById('realm-main');
+
+            wave.classList.add('trigger-wave');
+            setTimeout(() => {
+                portal.classList.add('warp-out');
+                main.classList.add('enter-active');
+            }, 180);
+        }
+    </script>
+</body>
+</html>
