@@ -6,8 +6,8 @@ NC='\033[0m'
 
 DOMAIN="erfan.paydar.store"
 PORT="2052"
-GITHUB_USER="YOUR_GITHUB_USER"
-REPO_NAME="bio"
+GITHUB_USER="mrerfan22"
+REPO_NAME="My_site"
 
 echo -e "${CYAN}Deploying Web3 Bio on $DOMAIN (Port $PORT)...${NC}"
 
